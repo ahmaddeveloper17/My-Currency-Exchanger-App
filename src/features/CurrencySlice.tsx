@@ -20,27 +20,10 @@ export const fetchExchangeRates = createAsyncThunk(
 
       return responseData;
     } catch (error) {
-      // console.error('Error fetching exchange rates:', error);
       throw Error('Failed to fetch exchange rates');
     }
   }
 );
-
-// export const fetchCountryNames = createAsyncThunk(
-//   'currency/fetchExchangeRates',
-//   async (baseCurrency: string) => {
-//     try {
-//       const response = await axios.get(` https://route-handler-bootcamp.vercel.app/api/http:/api.exchangeratesapi.io/v1/symbols?access_key=4c9fea4e264cd6f8266a884feb4b839b`);
-//       const responseData = response.data.symbols;
-//       console.log(response);
-
-//       return responseData;
-//     } catch (error) {
-//      // console.error('Error fetching exchange rates:', error);
-//       throw Error('Failed to fetch exchange rates');
-//     }
-//   }
-// );
 
 const initialState: CurrencyState = {
   rates: {},
