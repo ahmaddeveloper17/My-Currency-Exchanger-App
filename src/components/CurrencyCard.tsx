@@ -10,7 +10,7 @@ import {
   fetchExchangeRates,
 } from '../features/CurrencySlice';
 
-const apiUrl = ' https://route-handler-bootcamp.vercel.app/api/http://api.exchangeratesapi.io/v1/symbols?access_key=4c9fea4e264cd6f8266a884feb4b839b';
+//const apiUrl = ' https://route-handler-bootcamp.vercel.app/api/http://api.exchangeratesapi.io/v1/symbols?access_key=4c9fea4e264cd6f8266a884feb4b839b';
 
 interface CurrencyOption {
   value: string;
@@ -32,19 +32,19 @@ function App() {
   const [countryNames, setCountryNames] = useState<string[]>([]);
   const [countryCurrencies, setCountryCurrencies] = useState<string[]>([]);
 
-  useEffect(() => {
-    axios.get(apiUrl)
-      .then(response => response.data)
-      .then(data => {
-        const symbols = data.symbols;
-        const names = Object.values(symbols) as string[];
-        const currencies = Object.keys(symbols) as string[];
+  // useEffect(() => {
+  //   axios.get(apiUrl)
+  //     .then(response => response.data)
+  //     .then(data => {
+  //       const symbols = data.symbols;
+  //       const names = Object.values(symbols) as string[];
+  //       const currencies = Object.keys(symbols) as string[];
 
-        setCountryNames(names);
-        setCountryCurrencies(currencies);
-      })
-      .catch(error => console.error('Error fetching country names:', error));
-  }, []);
+  //       setCountryNames(names);
+  //       setCountryCurrencies(currencies);
+  //     })
+  //     .catch(error => console.error('Error fetching country names:', error));
+  // }, []);
 
   useEffect(() => {
     dispatch(fetchExchangeRates(baseCurrency) as any);
@@ -117,7 +117,7 @@ function App() {
                 >
                   {mapRatesToOptions().map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{option.label}
+                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
                     </option>
                   ))}
                 </select>
@@ -153,7 +153,7 @@ function App() {
                 >
                   {mapRatesToOptions().map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{option.label}
+                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
                     </option>
                   ))}
                 </select>
