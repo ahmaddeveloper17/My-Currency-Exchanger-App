@@ -68,7 +68,7 @@ function App() {
 
     setConvertedAmount(convertedAmount);
 
-    setPopupVisible(true);
+    setPopupVisible(false);
   };
 
   const swapCurrencies = () => {
