@@ -1,5 +1,4 @@
 
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,14 +10,17 @@ import {
   fetchExchangeRates,
 } from '../features/CurrencySlice';
 
-const apiUrl = 'http://api.exchangeratesapi.io/v1/symbols?access_key=4c9fea4e264cd6f8266a884feb4b839b';
-
 interface CurrencyOption {
   value: string;
   label: string;
 }
 
-function calculateConvertedAmount(amount: number, sourceCurrency: string, targetCurrency: string, exchangeRates: Record<string, number>): number {
+function calculateConvertedAmount(
+  amount: number,
+  sourceCurrency: string,
+  targetCurrency: string,
+  exchangeRates: Record<string, number>
+): number {
   const eurAmount = amount / exchangeRates[sourceCurrency];
   const targetAmount = eurAmount * exchangeRates[targetCurrency];
   return targetAmount;
@@ -29,23 +31,6 @@ function App() {
   const { rates, baseCurrency, targetCurrency, amount, loading, error } = useSelector(selectCurrency);
   const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
   const [popupVisible, setPopupVisible] = useState(false);
-
-  const [countryNames, setCountryNames] = useState<string[]>([]);
-  const [countryCurrencies, setCountryCurrencies] = useState<string[]>([]);
-
-  useEffect(() => {
-    axios.get(apiUrl)
-      .then(response => response.data)
-      .then(data => {
-        const symbols = data.symbols;
-        const names = Object.values(symbols) as string[];
-        const currencies = Object.keys(symbols) as string[];
-
-        setCountryNames(names);
-        setCountryCurrencies(currencies);
-      })
-      .catch(error => console.error('Error fetching country names:', error));
-  }, []);
 
   useEffect(() => {
     dispatch(fetchExchangeRates(baseCurrency) as any);
@@ -63,6 +48,17 @@ function App() {
     dispatch(setAmount(Number(event.target.value)));
   };
 
+  // Example implementation of mapRatesToOptions function
+  const mapRatesToOptions = (): CurrencyOption[] => {
+    // Replace this with your actual data structure from rates
+    const currencyOptions: CurrencyOption[] = Object.keys(rates).map((currency) => ({
+      value: currency,
+      label: currency,
+    }));
+
+    return currencyOptions;
+  };
+
   const convertCurrency = () => {
     if (!amount || !rates || !targetCurrency) {
       return;
@@ -72,21 +68,14 @@ function App() {
 
     setConvertedAmount(convertedAmount);
 
-    setPopupVisible(false);
+    setPopupVisible(true);
   };
 
   const swapCurrencies = () => {
     dispatch(setBaseCurrency(targetCurrency));
     dispatch(setTargetCurrency(baseCurrency));
   };
-
-  const mapRatesToOptions = (): CurrencyOption[] => {
-    return countryNames.map((countryName, index) => ({
-      value: countryCurrencies[index],
-      label: `${countryName} - ${countryCurrencies[index]} (${countryName})`,
-    }));
-  };
-  return (
+return (
     <div className="rounded-md relative bg-white w-3/4 shadow-2xl p-4  mx-auto">
       <h1 className="text-center font-roboto text-3xl font-bold leading-7 text-gray-800 mt-6 mb-8">
         Make fast and affordable <br /> international business payments
@@ -118,7 +107,7 @@ function App() {
                 >
                   {mapRatesToOptions().map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{option.label}
+                      {option.value}
                     </option>
                   ))}
                 </select>
@@ -154,7 +143,7 @@ function App() {
                 >
                   {mapRatesToOptions().map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{option.label}
+                      {option.value}
                     </option>
                   ))}
                 </select>
@@ -202,4 +191,6 @@ function App() {
 }
 
 export default App;
+
+
 
